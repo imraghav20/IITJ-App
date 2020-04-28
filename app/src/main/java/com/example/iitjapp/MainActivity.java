@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -64,15 +65,46 @@ public class MainActivity extends AppCompatActivity {
 
         if(currentUser==null)
         {
-            sendUserToMainActivity();
+            sendUserToLoginActivity();
         }
     }
 
-    private void sendUserToMainActivity()
+    private void sendUserToLoginActivity()
     {
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.side_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if(item.getItemId() == R.id.map)
+        {
+
+        }
+        if(item.getItemId() == R.id.links)
+        {
+
+        }
+        if(item.getItemId() == R.id.signout)
+        {
+            mAuth.signOut();
+            sendUserToLoginActivity();
+        }
+
+        return true;
     }
 }
