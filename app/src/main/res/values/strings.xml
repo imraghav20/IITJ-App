@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">IITJ App</string>
+    <string name="aryabhatta">
+        <a href="http://intra.iitj.ac.in:8080/Aryabhatta/">
+            Aryabhatta Portal (before July 2019)
+        </a>
+    </string>
+    <string name="new_aryabhatta">
+        <a href="http://intra.iitj.ac.in:8080/Aryabhatta_New/">
+            New Aryabhatta Portal (after July 2019)
+        </a>
+    </string>
+    <string name="online_fee">
+        <a href="https://oa.iitj.ac.in/FeePayment/">
+            Online Fee Payment
+        </a>
+    </string>
+    <string name="library">
+        <a href="http://library.iitj.ac.in/">
+            IITJ Library
+        </a>
+    </string>
+    <string name="nptel">
+        <a href="https://nptel.ac.in/">
+            NPTEL
+        </a>
+    </string>
 </resources>

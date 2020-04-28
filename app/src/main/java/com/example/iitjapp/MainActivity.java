@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(item.getItemId() == R.id.links)
         {
-
+            sendUserToQuickLinksActivity();
         }
         if(item.getItemId() == R.id.signout)
         {
@@ -107,4 +107,12 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
+
+    private void sendUserToQuickLinksActivity()
+    {
+        Intent quickLinksIntent = new Intent(MainActivity.this, QuickLinksActivity.class);
+        startActivity(quickLinksIntent);
+    }
+
+
 }
