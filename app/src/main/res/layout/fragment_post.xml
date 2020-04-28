@@ -2,11 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="POST"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
+    <LinearLayout
+        android:id="@+id/post_items"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <ImageButton
+            android:id="@+id/buy_and_sell"
+            android:layout_width="250dp"
+            android:layout_height="200dp"
+            android:src="@drawable/buyandsell"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button"
+            android:scaleType="fitCenter"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
+        <ImageButton
+            android:id="@+id/gallery"
+            android:layout_width="250dp"
+            android:layout_height="200dp"
+            android:src="@drawable/gallery"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button"
+            android:scaleType="fitCenter"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"/>
+    </LinearLayout>
     
 </RelativeLayout>
