@@ -1,5 +1,6 @@
 package com.example.iitjapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,15 @@ public class InterfaceFragment extends Fragment {
         invitation = (ImageButton) rootView.findViewById(R.id.invitation);
         books = (ImageButton) rootView.findViewById(R.id.books);
         testpapers = (ImageButton) rootView.findViewById(R.id.testpapers);
+
+        suggestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent suggestionsIntent = new Intent(getActivity(), SuggestionsActivity.class );
+                startActivity(suggestionsIntent);
+            }
+        });
 
         return rootView;
     }
