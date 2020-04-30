@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.Html;
 import android.view.Display;
 import android.view.View;
 import android.widget.EditText;
@@ -122,7 +123,8 @@ public class SuggestionsActivity extends AppCompatActivity {
             String chatName = (String) ((DataSnapshot) iterator.next()).getValue();
             String chatTime = (String) ((DataSnapshot) iterator.next()).getValue();
 
-            messageDisplay.append(chatName + ": \n" + chatMessage + "\n" + chatTime + "    " + chatDate + "\n\n");
+            String suggestion = "<small><font color='blue'>" + chatName + ": <br/>" + "</font></small>" + chatMessage + "<br/>" + "<small><font color='blue'>" + chatTime + "&nbsp;&nbsp;&nbsp;" + chatDate +  "</font></small>" + "<br/><br/>";
+            messageDisplay.append(Html.fromHtml(suggestion));
 
             messageScroll.fullScroll(ScrollView.FOCUS_DOWN);
         }
