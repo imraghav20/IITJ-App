@@ -3,10 +3,26 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/poll_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="POLL"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
+        android:layout_centerHorizontal="true"
+        android:text="Poll"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25sp"
+        android:layout_marginTop="30sp"
+        android:textStyle="bold"
+        />
+
+    <ImageButton
+        android:id="@+id/new_poll_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add_circle_outline_red_60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@android:color/transparent"/>
     
 </RelativeLayout>
