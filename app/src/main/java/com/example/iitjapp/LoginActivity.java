@@ -6,25 +6,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.annotations.Nullable;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Button LoginButton;
-    private EditText UserEmail, UserPassword;
-
-    private FirebaseUser currentUser;
+    private SignInButton signInButton;
+    private GoogleSignInClient mGoogleSignInClient;
+    private String TAG = "LoginActivity";
     private FirebaseAuth mAuth;
+
+    private int RC_SIGN_IN = 1;
 
     private ProgressDialog loadingBar;
 
@@ -34,84 +41,103 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
-        InitializeFields();
+        signInButton = findViewById(R.id.signInButton);
 
-        LoginButton.setOnClickListener(new View.OnClickListener() {
+        loadingBar = new ProgressDialog(this);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                AllowUserToLogin();
+                signIn();
             }
         });
     }
 
-    private void AllowUserToLogin()
+    @Override
+    protected void onStart()
     {
-        String Email = UserEmail.getText().toString();
-        String Password = UserPassword.getText().toString();
+        super.onStart();
 
-        if(TextUtils.isEmpty(Email))
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+        if(firebaseUser != null)
         {
-            Toast.makeText(this, "Please enter your email address.", Toast.LENGTH_SHORT).show();
-        }
-
-        if(TextUtils.isEmpty(Password))
-        {
-            Toast.makeText(this, "Please enter password.", Toast.LENGTH_SHORT).show();
-        }
-
-        else
-        {
-            loadingBar.setTitle("Logging in");
-            loadingBar.setMessage("Please wait...");
-            loadingBar.setCanceledOnTouchOutside(true);
-            loadingBar.show();
-
-            mAuth.signInWithEmailAndPassword(Email, Password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task)
-                        {
-                            if(task.isSuccessful())
-                            {
-                                SendUserToMainActivity();
-                                Toast.makeText(LoginActivity.this, "Logged in successfully.", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }
-                            else
-                            {
-                                String message = task.getException().toString();
-                                Toast.makeText(LoginActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }
-                        }
-                    });
+            sendUserToMainActivity();
         }
     }
 
-    private void InitializeFields()
+    private void signIn()
     {
-        LoginButton = (Button) findViewById(R.id.login_button);
-        UserEmail = (EditText) findViewById(R.id.login_email);
-        UserPassword = (EditText) findViewById(R.id.login_password);
-        loadingBar = new ProgressDialog(this);
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (currentUser != null)
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RC_SIGN_IN)
         {
-            SendUserToMainActivity();
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            loadingBar.setTitle("Logging in");
+            loadingBar.setMessage("Please wait, while we are logging you in");
+            loadingBar.setCanceledOnTouchOutside(false);
+            loadingBar.show();
+            handleSignInResult(task);
         }
     }
 
-    private void SendUserToMainActivity()
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask)
     {
-        Intent LoginActivity = new Intent(com.example.iitjapp.LoginActivity.this, MainActivity.class);
-        startActivity(LoginActivity);
+        try {
+            GoogleSignInAccount acc = completedTask.getResult(ApiException.class);
+            loadingBar.dismiss();
+            Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+            FirebaseGoogleAuth(acc);
+        }
+        catch (ApiException e)
+        {
+            loadingBar.dismiss();
+            Toast.makeText(this, "Error: "+e, Toast.LENGTH_SHORT).show();
+            FirebaseGoogleAuth(null);
+        }
+    }
+
+    private void FirebaseGoogleAuth(GoogleSignInAccount acct)
+    {
+        AuthCredential authCredential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(authCredential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        if(task.isSuccessful())
+                        {
+                            sendUserToMainActivity();
+                            Toast.makeText(LoginActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            String error = task.getException().toString();
+                            Toast.makeText(LoginActivity.this, "Error: "+error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void sendUserToMainActivity()
+    {
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
     }
 }

@@ -17,81 +17,46 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/login_heading"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login To IITJ App"
-        android:textSize="40sp"
-        android:textColor="@color/colorPrimary"
-        android:textAlignment="center"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        />
-
-    <ImageView
-        android:id="@+id/login_image"
-        android:layout_below="@id/login_heading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/iitj_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        />
+        android:layout_marginTop="60dp">
 
 
-    <EditText
-        android:id="@+id/login_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/login_image"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:padding="4dp"
-        android:drawableStart="@drawable/email"
-        android:drawableLeft="@drawable/email"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="17dp"
-        android:layout_marginRight="17dp"
-        android:background="@android:color/white"
-        />
+        <ImageView
+            android:id="@+id/login_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iitj_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            />
 
-    <EditText
-        android:id="@+id/login_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/login_email"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:padding="4dp"
-        android:drawableStart="@drawable/password"
-        android:drawableLeft="@drawable/password"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="17dp"
-        android:layout_marginRight="17dp"
-        android:background="@android:color/white"
-        />
+        <TextView
+            android:id="@+id/login_heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_image"
+            android:text="Google SignIn To IITJ App"
+            android:textSize="30sp"
+            android:textColor="@color/colorPrimary"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            />
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_password"
-        android:padding="4dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:text="Login"
-        android:textAllCaps="false"
-        android:textSize="24sp"
-        android:textColor="@android:color/background_light"
-        android:background="@color/colorPrimary"
-        />
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/signInButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:layout_below="@id/login_heading"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:scaleY="1.5"
+            android:scaleX="1.5"
+            android:layout_marginBottom="30dp"/>
+
+
+
 
     </RelativeLayout>
 
