@@ -13,7 +13,6 @@ import androidx.appcompat.widget.Toolbar;
 
 public class QuickLinksActivity extends AppCompatActivity {
 
-//    private Toolbar QuickLinksToolbar;
     private TextView aryabhatta, new_aryabhatta, online_fees, library, nptel;
 
     @Override
@@ -21,11 +20,6 @@ public class QuickLinksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_links);
 
-//        QuickLinksToolbar = (Toolbar) findViewById(R.id.quick_links_toolbar);
-//        setSupportActionBar(QuickLinksToolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowCustomEnabled(true);
-//        getSupportActionBar().setTitle("Quick Links");
         aryabhatta = (TextView) findViewById(R.id.aryabhatta);
         new_aryabhatta = (TextView) findViewById(R.id.new_aryabhatta);
         online_fees = (TextView) findViewById(R.id.online_fees);

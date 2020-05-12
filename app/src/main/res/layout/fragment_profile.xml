@@ -2,85 +2,78 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/profile_image"/>
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/user_name"
+            android:src="@drawable/profile_image"/>
 
-        <EditText
-         android:id="@+id/user_name"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/profile_image"
-         android:hint="Name"
-         android:textAlignment="center"
-         android:gravity="center_horizontal"
-         android:layout_marginTop="30dp"
-         android:layout_marginRight="10dp"
-         android:layout_marginLeft="10dp"
-         android:textSize="25sp"
-         android:background="@android:color/white"/>
+            <EditText
+                 android:id="@+id/user_name"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_above="@+id/user_roll"
+                 android:hint="Name"
+                 android:textAlignment="center"
+                 android:gravity="center_horizontal"
+                 android:layout_marginTop="30dp"
+                 android:layout_marginRight="10dp"
+                 android:layout_marginLeft="10dp"
+                 android:textSize="25sp"
+                android:background="@drawable/textview"/>
 
-        <EditText
-            android:id="@+id/user_roll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/user_name"
-            android:hint="Roll no."
-            android:textAlignment="center"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="25sp"
-            android:background="@android:color/white"/>
+            <EditText
+                android:id="@+id/user_roll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/user_clubs"
+                android:hint="Roll no."
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="25sp"
+                android:background="@drawable/textview"/>
 
-        <EditText
-            android:id="@+id/user_clubs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/user_roll"
-            android:hint="Clubs"
-            android:textAlignment="center"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="25sp"
-            android:background="@android:color/white"
-            android:inputType="textMultiLine"/>
+            <EditText
+                android:id="@+id/user_clubs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/update_profile_button"
+                android:hint="Clubs"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="25sp"
+                android:background="@drawable/textview"
+                android:inputType="textMultiLine"/>
 
-        <Button
-            android:id="@+id/update_profile_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/user_clubs"
-            android:layout_marginLeft="30sp"
-            android:layout_marginRight="30sp"
-            android:layout_marginTop="30dp"
-            android:background="@color/colorPrimary"
-            android:text="Update Profile"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="30sp"/>
-
+            <Button
+                android:id="@+id/update_profile_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="30sp"
+                android:layout_marginRight="30sp"
+                android:layout_marginTop="30dp"
+                android:background="@color/colorPrimary"
+                android:text="Update Profile"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"/>
 
     </RelativeLayout>
-
-    </ScrollView>
 
 </RelativeLayout>

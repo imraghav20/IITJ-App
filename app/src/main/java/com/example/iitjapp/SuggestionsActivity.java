@@ -30,7 +30,7 @@ import java.util.Iterator;
 
 public class SuggestionsActivity extends AppCompatActivity {
 
-    private TextView heading, messageDisplay;
+    private TextView messageDisplay;
     private ImageButton sendButton;
     private EditText inputMessage;
     private ScrollView messageScroll;
@@ -187,7 +187,6 @@ public class SuggestionsActivity extends AppCompatActivity {
 
     private void InitializeFields()
     {
-        heading = (TextView) findViewById(R.id.suggestions_title);
         messageDisplay = (TextView) findViewById(R.id.suggestions_display);
         sendButton = (ImageButton) findViewById(R.id.send_suggestion_button);
         inputMessage = (EditText) findViewById(R.id.input_suggestion);

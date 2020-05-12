@@ -7,24 +7,40 @@
     tools:context=".SuggestionsActivity"
     android:background="@drawable/bg">
 
-    <TextView
-        android:id="@+id/suggestions_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Suggestions"
-        android:textColor="@color/colorPrimary"
-        android:textSize="25sp"
-        android:layout_marginTop="30sp"
-        android:textStyle="bold"
-        />
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_suggestions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Suggestions"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:id="@+id/suggestions_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/suggestions_title"
-        android:layout_marginTop="20sp"
+        android:layout_below="@+id/app_bar_layout_suggestions"
+        android:layout_marginTop="5dp"
         android:layout_above="@+id/suggestions_linearlayout">
 
         <LinearLayout

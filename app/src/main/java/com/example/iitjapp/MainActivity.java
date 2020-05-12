@@ -15,11 +15,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
+
+    private DatabaseReference usersRef;
 
     private GoogleSignInClient mGoogleSignInClient;
 
@@ -30,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -79,6 +88,30 @@ public class MainActivity extends AppCompatActivity {
         {
             sendUserToLoginActivity();
         }
+
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if(!dataSnapshot.hasChild(currentUser.getUid()))
+                {
+                    sendUserToProfileActivity();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void sendUserToProfileActivity()
+    {
+        Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+        profileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(profileIntent);
+        finish();
     }
 
     private void sendUserToLoginActivity()

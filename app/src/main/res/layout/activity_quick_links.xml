@@ -7,23 +7,40 @@
     tools:context=".QuickLinksActivity"
     android:background="@drawable/bg">
 
-    <TextView
-        android:id="@+id/quick_links"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:text="Quick Links"
-        android:layout_centerHorizontal="true"
-        android:textSize="30sp"
-        android:layout_marginTop="15dp"
-        android:textStyle="bold"/>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_quick_links"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quick Links"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
         android:id="@+id/aryabhatta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/aryabhatta"
-        android:layout_below="@+id/quick_links"
+        android:layout_below="@+id/app_bar_layout_quick_links"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
         android:textSize="20sp"

@@ -13,13 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewPollActivity"></activity>
-        <activity android:name=".SuggestionsActivity" />
-        <activity android:name=".QuickLinksActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity
-            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".NewPollActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".SuggestionsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".QuickLinksActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
