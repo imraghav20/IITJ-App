@@ -3,18 +3,24 @@ package com.example.iitjapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.Html;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,10 +36,9 @@ import java.util.Iterator;
 
 public class SuggestionsActivity extends AppCompatActivity {
 
-    private TextView messageDisplay;
+    private RecyclerView suggestionsList;
     private ImageButton sendButton;
     private EditText inputMessage;
-    private ScrollView messageScroll;
 
     private FirebaseAuth mAuth;
 
@@ -65,70 +70,79 @@ public class SuggestionsActivity extends AppCompatActivity {
 
                 inputMessage.setText("");
 
-                messageScroll.fullScroll(ScrollView.FOCUS_DOWN);
+                suggestionsList.smoothScrollToPosition(suggestionsList.getAdapter().getItemCount());
             }
         });
     }
 
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
-        SuggestionsRef.addChildEventListener(new ChildEventListener() {
+        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Suggestions>()
+                .setQuery(SuggestionsRef, Suggestions.class)
+                .build();
+
+        FirebaseRecyclerAdapter<Suggestions, SuggestionsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Suggestions, SuggestionsViewHolder>(options) {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
+            protected void onBindViewHolder(@NonNull final SuggestionsViewHolder suggestionsViewHolder, int i, @NonNull Suggestions suggestions)
             {
-                if(dataSnapshot.exists())
-                {
-                    DisplayMessages(dataSnapshot);
-                }
+                final String messageId = getRef(i).getKey();
+
+                SuggestionsRef.child(messageId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    {
+                        if(dataSnapshot.exists())
+                        {
+                            String suggestionBy = dataSnapshot.child("name").getValue().toString();
+                            String suggestionMessage = dataSnapshot.child("message").getValue().toString();
+                            String suggestionDate = dataSnapshot.child("date").getValue().toString();
+                            String suggestionTime = dataSnapshot.child("time").getValue().toString();
+
+                            suggestionsViewHolder.userName.setText(suggestionBy);
+                            suggestionsViewHolder.message.setText(suggestionMessage);
+                            suggestionsViewHolder.date.setText(suggestionDate);
+                            suggestionsViewHolder.time.setText(suggestionTime);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
 
+            @NonNull
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
+            public SuggestionsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
             {
-                if(dataSnapshot.exists())
-                {
-                    DisplayMessages(dataSnapshot);
-                }
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.suggestion_design, parent, false);
+                SuggestionsViewHolder viewHolder = new SuggestionsViewHolder(view);
+                return viewHolder;
             }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        };
+        suggestionsList.setAdapter(firebaseRecyclerAdapter);
+        firebaseRecyclerAdapter.startListening();
     }
 
-    private void DisplayMessages(DataSnapshot dataSnapshot)
+    public static class SuggestionsViewHolder extends RecyclerView.ViewHolder
     {
-        Iterator iterator = dataSnapshot.getChildren().iterator();
+        TextView userName, message, date, time;
 
-        while (iterator.hasNext())
+        public SuggestionsViewHolder(@NonNull View itemView)
         {
-            String chatDate = (String) ((DataSnapshot) iterator.next()).getValue();
-            String chatMessage = (String) ((DataSnapshot) iterator.next()).getValue();
-            String chatName = (String) ((DataSnapshot) iterator.next()).getValue();
-            String chatTime = (String) ((DataSnapshot) iterator.next()).getValue();
+            super(itemView);
 
-            String suggestion = "<small><font color='blue'>" + chatName + ": <br/>" + "</font></small>" + chatMessage + "<br/>" + "<small><font color='blue'>" + chatTime + "&nbsp;&nbsp;&nbsp;" + chatDate +  "</font></small>" + "<br/><br/>";
-            messageDisplay.append(Html.fromHtml(suggestion));
-
-            messageScroll.fullScroll(ScrollView.FOCUS_DOWN);
+            userName = itemView.findViewById(R.id.suggestion_by);
+            message = itemView.findViewById(R.id.suggestion_message);
+            date = itemView.findViewById(R.id.suggestion_date);
+            time = itemView.findViewById(R.id.suggestion_time);
         }
     }
+
 
 
     private void SaveMessageInfoToDatabase()
@@ -187,9 +201,9 @@ public class SuggestionsActivity extends AppCompatActivity {
 
     private void InitializeFields()
     {
-        messageDisplay = (TextView) findViewById(R.id.suggestions_display);
         sendButton = (ImageButton) findViewById(R.id.send_suggestion_button);
         inputMessage = (EditText) findViewById(R.id.input_suggestion);
-        messageScroll = (ScrollView) findViewById(R.id.suggestions_scroll_view);
+        suggestionsList = (RecyclerView) findViewById(R.id.suggestions_recyclerview);
+        suggestionsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 }
