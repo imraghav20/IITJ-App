@@ -28,7 +28,8 @@
                  android:layout_marginRight="10dp"
                  android:layout_marginLeft="10dp"
                  android:textSize="25sp"
-                android:background="@drawable/textview"/>
+                android:background="@drawable/textview"
+                android:textCursorDrawable="@android:color/black"/>
 
             <EditText
                 android:id="@+id/user_roll"
@@ -42,7 +43,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:textSize="25sp"
-                android:background="@drawable/textview"/>
+                android:background="@drawable/textview"
+                android:textCursorDrawable="@android:color/black"/>
 
             <EditText
                 android:id="@+id/user_clubs"
@@ -57,7 +59,8 @@
                 android:layout_marginLeft="10dp"
                 android:textSize="25sp"
                 android:background="@drawable/textview"
-                android:inputType="textMultiLine"/>
+                android:inputType="textMultiLine"
+                android:textCursorDrawable="@android:color/black"/>
 
             <Button
                 android:id="@+id/update_profile_button"

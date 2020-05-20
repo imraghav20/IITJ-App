@@ -22,6 +22,7 @@
                     android:text="Profile"
                     android:textSize="20dp"
                     android:textStyle="bold"
+                    android:textColor="@android:color/white"
                     android:layout_centerVertical="true"/>
 
             </RelativeLayout>
@@ -56,7 +57,8 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textSize="25sp"
-            android:background="@drawable/textview"/>
+            android:background="@drawable/textview"
+            android:textCursorDrawable="@android:color/black"/>
 
         <EditText
             android:id="@+id/user_roll_activity"
@@ -70,7 +72,8 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textSize="25sp"
-            android:background="@drawable/textview"/>
+            android:background="@drawable/textview"
+            android:textCursorDrawable="@android:color/black"/>
 
         <EditText
             android:id="@+id/user_clubs_activity"
@@ -85,7 +88,8 @@
             android:layout_marginLeft="10dp"
             android:textSize="25sp"
             android:background="@drawable/textview"
-            android:inputType="textMultiLine"/>
+            android:inputType="textMultiLine"
+            android:textCursorDrawable="@android:color/black"/>
 
         <Button
             android:id="@+id/update_profile_button_activity"

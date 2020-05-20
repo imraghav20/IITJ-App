@@ -60,7 +60,8 @@
             android:textSize="20dp"
             android:hint="Your question here..."
             android:padding="5dp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:textCursorDrawable="@android:color/black"/>
 
         <EditText
             android:id="@+id/new_poll_option_1"
@@ -75,7 +76,8 @@
             android:inputType="textMultiLine"
             android:hint="Option 1"
             android:padding="5dp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:textCursorDrawable="@android:color/black"/>
 
         <EditText
             android:id="@+id/new_poll_option_2"
@@ -90,7 +92,8 @@
             android:inputType="textMultiLine"
             android:hint="Option 2"
             android:padding="5dp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:textCursorDrawable="@android:color/black"/>
 
         <EditText
             android:id="@+id/new_poll_option_3"
@@ -105,7 +108,8 @@
             android:inputType="textMultiLine"
             android:hint="Option 3 (optional)"
             android:padding="5dp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:textCursorDrawable="@android:color/black"/>
 
         <EditText
             android:id="@+id/new_poll_option_4"
@@ -120,7 +124,8 @@
             android:inputType="textMultiLine"
             android:hint="Option 4 (optional)"
             android:padding="5dp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:textCursorDrawable="@android:color/black"/>
 
         </RelativeLayout>
 
