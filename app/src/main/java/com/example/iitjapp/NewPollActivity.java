@@ -111,17 +111,19 @@ public class NewPollActivity extends AppCompatActivity {
             pollMap.put("createdBy", createdBy);
             pollMap.put("date", currentDate);
             pollMap.put("time", currentTime);
+            pollMap.put("option 1", option1_value);
+            pollMap.put("option 2", option2_value);
+            pollMap.put("option 3", option3_value);
+            pollMap.put("option 4", option4_value);
             pollRef.child(pollKey).updateChildren(pollMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task)
                         {
-                            HashMap<String, Object> optionsMap = new HashMap<>();
-                            optionsMap.put("option 1", option1_value);
-                            optionsMap.put("option 2", option2_value);
-                            optionsMap.put("option 3", option3_value);
-                            optionsMap.put("option 4", option4_value);
-                            pollRef.child(pollKey).child("options").updateChildren(optionsMap)
+                            pollRef.child(pollKey).child("result").child("option 1").setValue(0);
+                            pollRef.child(pollKey).child("result").child("option 2").setValue(0);
+                            pollRef.child(pollKey).child("result").child("option 3").setValue(0);
+                            pollRef.child(pollKey).child("result").child("option 4").setValue(0)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task)
