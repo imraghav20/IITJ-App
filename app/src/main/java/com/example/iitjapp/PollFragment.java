@@ -1,6 +1,7 @@
 package com.example.iitjapp;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +33,9 @@ public class PollFragment extends Fragment {
 
     private DatabaseReference pollsRef;
 
+    private FirebaseAuth mAuth;
+    private String currentUserId;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,6 +47,9 @@ public class PollFragment extends Fragment {
         new_poll_button = (ImageButton) rootView.findViewById(R.id.new_poll_button);
 
         pollsRef = FirebaseDatabase.getInstance().getReference().child("Polls");
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUserId = mAuth.getCurrentUser().getUid();
 
         new_poll_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,11 +77,49 @@ public class PollFragment extends Fragment {
             {
                 final String pollId = getRef(i).getKey();
 
+                pollsRef.child(pollId).child("users").child(currentUserId)
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                            {
+                                if(!dataSnapshot.exists())
+                                {
+                                    pollsRef.child(pollId).child("users").child(currentUserId).child("selected").setValue("");
+                                }
+                                else
+                                {
+                                    String selected = dataSnapshot.child("selected").getValue().toString();
+
+                                    if(selected.equals("option 1"))
+                                    {
+                                        pollsViewHolder.option1.setBackgroundResource(R.drawable.selected_button);
+                                    }
+                                    if(selected.equals("option 2"))
+                                    {
+                                        pollsViewHolder.option2.setBackgroundResource(R.drawable.selected_button);
+                                    }
+                                    if(selected.equals("option 3"))
+                                    {
+                                        pollsViewHolder.option3.setBackgroundResource(R.drawable.selected_button);
+                                    }
+                                    if(selected.equals("option 4"))
+                                    {
+                                        pollsViewHolder.option4.setBackgroundResource(R.drawable.selected_button);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
                 pollsRef.child(pollId).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot)
                     {
-                        String pollBy = dataSnapshot.child("createdBy").getValue().toString();
+                        final String pollBy = dataSnapshot.child("createdBy").getValue().toString();
                         String question = dataSnapshot.child("question").getValue().toString();
                         String date = dataSnapshot.child("date").getValue().toString();
                         String time = dataSnapshot.child("time").getValue().toString();
@@ -99,6 +146,157 @@ public class PollFragment extends Fragment {
                         {
                             pollsViewHolder.option4.setVisibility(View.GONE);
                         }
+
+                        pollsViewHolder.option1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                String selected = dataSnapshot.child("users").child(currentUserId).child("selected").getValue().toString();
+                                pollsViewHolder.option1.setBackgroundResource(R.drawable.selected_button);
+
+                                if(selected.equals(""))
+                                {
+                                    int count = Integer.parseInt(dataSnapshot.child("result").child("option 1").getValue().toString());
+                                    pollsRef.child(pollId).child("result").child("option 1").setValue(count + 1);
+
+                                    pollsRef.child(pollId).child("users").child(currentUserId).child("selected").setValue("option 1");
+                                }
+                                else if(!selected.equals("option 1"))
+                                {
+                                    int preCount = Integer.parseInt(dataSnapshot.child("result").child(selected).getValue().toString());
+                                    pollsRef.child(pollId).child("result").child(selected).setValue(preCount-1);
+
+                                    int count = Integer.parseInt(dataSnapshot.child("result").child("option 1").getValue().toString());
+                                    pollsRef.child(pollId).child("result").child("option 1").setValue(count + 1);
+
+                                    pollsRef.child(pollId).child("users").child(currentUserId).child("selected").setValue("option 1");
+
+                                    if(selected.equals("option 2"))
+                                    {
+                                        pollsViewHolder.option2.setBackgroundResource(R.drawable.button);
+                                    }
+                                    if(selected.equals("option 3"))
+                                    {
+                                        pollsViewHolder.option3.setBackgroundResource(R.drawable.button);
+                                    }
+                                    if(selected.equals("option 4"))
+                                    {
+                                        pollsViewHolder.option4.setBackgroundResource(R.drawable.button);
+                                    }
+                                }
+                            }
+                        });
+
+                        pollsViewHolder.option2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                String selected = dataSnapshot.child("users").child(currentUserId).child("selected").getValue().toString();
+                                pollsRef.child(pollId).child("users").child(currentUserId).child("selected").setValue("option 2");
+                                pollsViewHolder.option2.setBackgroundResource(R.drawable.selected_button);
+
+                                if(selected.equals(""))
+                                {
+                                    int count = Integer.parseInt(dataSnapshot.child("result").child("option 2").getValue().toString());
+                                    pollsRef.child(pollId).child("result").child("option 2").setValue(count + 1);
+                                }
+                                else if(!selected.equals("option 2"))
+                                {
+                                    int preCount = Integer.parseInt(dataSnapshot.child("result").child(selected).getValue().toString());
+                                    pollsRef.child(pollId).child("result").child(selected).setValue(preCount-1);
+
+                                    int count = Integer.parseInt(dataSnapshot.child("result").child("option 2").getValue().toString());
+                                    pollsRef.child(pollId).child("result").child("option 2").setValue(count + 1);
+
+                                    if(selected.equals("option 1"))
+                                    {
+                                        pollsViewHolder.option1.setBackgroundResource(R.drawable.button);
+                                    }
+                                    if(selected.equals("option 3"))
+                                    {
+                                        pollsViewHolder.option3.setBackgroundResource(R.drawable.button);
+                                    }
+                                    if(selected.equals("option 4"))
+                                    {
+                                        pollsViewHolder.option4.setBackgroundResource(R.drawable.button);
+                                    }
+                                }
+                            }
+                        });
+
+                        pollsViewHolder.option3.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                String selected = dataSnapshot.child("users").child(currentUserId).child("selected").getValue().toString();
+                                pollsRef.child(pollId).child("users").child(currentUserId).child("selected").setValue("option 3");
+                                pollsViewHolder.option3.setBackgroundResource(R.drawable.selected_button);
+
+                                if(selected.equals(""))
+                                {
+                                    int count = Integer.parseInt(dataSnapshot.child("result").child("option 3").getValue().toString());
+                                    pollsRef.child(pollId).child("result").child("option 3").setValue(count + 1);
+                                }
+                                else if(!selected.equals("option 3"))
+                                {
+                                    int preCount = Integer.parseInt(dataSnapshot.child("result").child(selected).getValue().toString());
+                                    pollsRef.child(pollId).child("result").child(selected).setValue(preCount-1);
+
+                                    int count = Integer.parseInt(dataSnapshot.child("result").child("option 3").getValue().toString());
+                                    pollsRef.child(pollId).child("result").child("option 3").setValue(count + 1);
+
+                                    if(selected.equals("option 2"))
+                                    {
+                                        pollsViewHolder.option2.setBackgroundResource(R.drawable.button);
+                                    }
+                                    if(selected.equals("option 1"))
+                                    {
+                                        pollsViewHolder.option1.setBackgroundResource(R.drawable.button);
+                                    }
+                                    if(selected.equals("option 4"))
+                                    {
+                                        pollsViewHolder.option4.setBackgroundResource(R.drawable.button);
+                                    }
+                                }
+                            }
+                        });
+
+                        pollsViewHolder.option4.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                String selected = dataSnapshot.child("users").child(currentUserId).child("selected").getValue().toString();
+                                pollsRef.child(pollId).child("users").child(currentUserId).child("selected").setValue("option 4");
+                                pollsViewHolder.option4.setBackgroundResource(R.drawable.selected_button);
+
+                                if(selected.equals(""))
+                                {
+                                    int count = Integer.parseInt(dataSnapshot.child("result").child("option 4").getValue().toString());
+                                    pollsRef.child(pollId).child("result").child("option 4").setValue(count + 1);
+                                }
+                                else if(!selected.equals("option 4"))
+                                {
+                                    int preCount = Integer.parseInt(dataSnapshot.child("result").child(selected).getValue().toString());
+                                    pollsRef.child(pollId).child("result").child(selected).setValue(preCount-1);
+
+                                    int count = Integer.parseInt(dataSnapshot.child("result").child("option 4").getValue().toString());
+                                    pollsRef.child(pollId).child("result").child("option 4").setValue(count + 1);
+
+                                    if(selected.equals("option 2"))
+                                    {
+                                        pollsViewHolder.option2.setBackgroundResource(R.drawable.button);
+                                    }
+                                    if(selected.equals("option 3"))
+                                    {
+                                        pollsViewHolder.option3.setBackgroundResource(R.drawable.button);
+                                    }
+                                    if(selected.equals("option 1"))
+                                    {
+                                        pollsViewHolder.option1.setBackgroundResource(R.drawable.button);
+                                    }
+                                }
+                            }
+                        });
                     }
 
                     @Override

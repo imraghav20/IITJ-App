@@ -240,6 +240,8 @@ public class ProfileActivity extends AppCompatActivity {
                                 String retrieveUserImage = dataSnapshot.child("image").getValue().toString();
                                 Picasso.get().load(retrieveUserImage).placeholder(R.drawable.profile_image).into(profileImage);
                             }
+
+                            sendUserToMainActivity();
                         }
                         else
                         {
