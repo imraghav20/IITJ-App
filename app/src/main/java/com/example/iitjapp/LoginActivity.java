@@ -22,6 +22,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.annotations.Nullable;
 
 public class LoginActivity extends AppCompatActivity {
@@ -30,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private String TAG = "LoginActivity";
     private FirebaseAuth mAuth;
+
+    private DatabaseReference usersRef;
 
     private int RC_SIGN_IN = 1;
 
@@ -41,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         signInButton = findViewById(R.id.signInButton);
 
@@ -121,6 +127,14 @@ public class LoginActivity extends AppCompatActivity {
                     {
                         if(task.isSuccessful())
                         {
+                            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+                            if(account!=null)
+                            {
+                                String id = mAuth.getCurrentUser().getUid();
+                                String mail = account.getEmail();
+
+                                usersRef.child(id).child("mail").setValue(mail);
+                            }
                             sendUserToMainActivity();
                             Toast.makeText(LoginActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
                         }

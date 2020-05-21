@@ -63,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
+
         RootRef = FirebaseDatabase.getInstance().getReference();
         userProfileImageStorageRef = FirebaseStorage.getInstance().getReference().child("ProfileImages");
 

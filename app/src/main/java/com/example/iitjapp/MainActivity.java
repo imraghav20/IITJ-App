@@ -88,22 +88,26 @@ public class MainActivity extends AppCompatActivity {
         {
             sendUserToLoginActivity();
         }
-
-        usersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                if(!dataSnapshot.hasChild(currentUser.getUid()))
-                {
-                    sendUserToProfileActivity();
+        else {
+            usersRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (!dataSnapshot.child(currentUser.getUid()).hasChild("name")) {
+                            sendUserToProfileActivity();
+                        }
+                    } else {
+                        sendUserToProfileActivity();
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     private void sendUserToProfileActivity()
