@@ -297,6 +297,16 @@ public class PollFragment extends Fragment {
                                 }
                             }
                         });
+
+                        pollsViewHolder.results.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent resultIntent = new Intent(getActivity(), PollResultActivity.class);
+                                resultIntent.putExtra("pollId", pollId);
+                                startActivity(resultIntent);
+                            }
+                        });
+
                     }
 
                     @Override
