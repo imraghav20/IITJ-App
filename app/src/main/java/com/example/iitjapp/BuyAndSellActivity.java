@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,12 +80,12 @@ public class BuyAndSellActivity extends AppCompatActivity {
                         String date = dataSnapshot.child("date").getValue().toString();
                         String description = dataSnapshot.child("itemDescription").getValue().toString();
                         String image = dataSnapshot.child("itemImage").getValue().toString();
-                        String name = dataSnapshot.child("itemName").getValue().toString();
+                        final String name = dataSnapshot.child("itemName").getValue().toString();
                         String price = dataSnapshot.child("itemPrice").getValue().toString();
                         String time = dataSnapshot.child("time").getValue().toString();
                         String id = dataSnapshot.child("userId").getValue().toString();
-                        String mail = dataSnapshot.child("userMail").getValue().toString();
-                        String mobile = dataSnapshot.child("userMobile").getValue().toString();
+                        final String mail = dataSnapshot.child("userMail").getValue().toString();
+                        final String mobile = dataSnapshot.child("userMobile").getValue().toString();
 
                         itemPostViewHolder.userName.setText("Posted by: "+itemUser);
                         itemPostViewHolder.itemName.setText(name);
@@ -102,7 +103,34 @@ public class BuyAndSellActivity extends AppCompatActivity {
                         {
                             itemPostViewHolder.callButton.setVisibility(View.GONE);
                         }
-                        
+                        if(description.equals(""))
+                        {
+                            itemPostViewHolder.itemDescription.setVisibility(View.GONE);
+                        }
+
+                        itemPostViewHolder.emailButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                String [] recipient = mail.split(",");
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.putExtra(Intent.EXTRA_EMAIL, recipient);
+                                intent.putExtra(Intent.EXTRA_SUBJECT, "Buy and Sell- "+name);
+
+                                intent.setType("message/rfc822");
+                                startActivity(Intent.createChooser(intent, "Mail via: "));
+                            }
+                        });
+
+                        itemPostViewHolder.callButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                Uri number = Uri.parse("tel:"+mobile);
+                                Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+                                startActivity(callIntent);
+                            }
+                        });
                     }
 
                     @Override
