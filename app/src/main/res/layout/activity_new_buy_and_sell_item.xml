@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewBuyAndSellItemActivity"
+    android:background="@drawable/bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_new_item_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_new_item_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Item Post"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <ScrollView
+        android:id="@+id/new_item_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar_layout_new_item_post">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/new_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:hint="Name of your item"
+                android:background="@drawable/textview"
+                android:inputType="text"
+                android:padding="5dp"
+                android:textColor="@android:color/black"
+                android:textCursorDrawable="@android:color/black"/>
+
+            <ImageView
+                android:id="@+id/new_item_image"
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:layout_below="@+id/new_item_title"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_buy_and_sell_image_black_24dp"
+                android:background="@drawable/chat"/>
+
+            <EditText
+                android:id="@+id/new_item_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/new_item_image"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:hint="Price for your item (in Rs.)"
+                android:background="@drawable/textview"
+                android:inputType="number"
+                android:padding="5dp"
+                android:textColor="@android:color/black"
+                android:textCursorDrawable="@android:color/black"/>
+
+
+            <EditText
+                android:id="@+id/new_item_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/new_item_price"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:background="@drawable/textview"
+                android:hint="Description of your item (optional)"
+                android:padding="5dp"
+                android:textColor="@android:color/black"
+                android:textCursorDrawable="@android:color/black" />
+
+
+            <EditText
+                android:id="@+id/new_item_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/new_item_description"
+                android:background="@drawable/textview"
+                android:layout_margin="10dp"
+                android:hint="Your mobile no. (Optional)"
+                android:padding="5dp"
+                android:textColor="@android:color/black"
+                android:textCursorDrawable="@android:color/black"
+                android:inputType="phone"/>
+
+            <Button
+                android:id="@+id/post_new_item_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/new_item_mobile"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/button"
+                android:text="Post Item"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginBottom="10dp"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
