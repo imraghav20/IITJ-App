@@ -16,15 +16,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 public class BuyAndSellActivity extends AppCompatActivity {
@@ -33,6 +40,7 @@ public class BuyAndSellActivity extends AppCompatActivity {
     private RecyclerView itemsList;
 
     private DatabaseReference buyAndSellRef;
+    private StorageReference buyAndSellStorageRef;
     private FirebaseAuth mAuth;
     private String currentUserId;
 
@@ -46,6 +54,7 @@ public class BuyAndSellActivity extends AppCompatActivity {
         itemsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         buyAndSellRef = FirebaseDatabase.getInstance().getReference().child("BuyAndSell");
+        buyAndSellStorageRef = FirebaseStorage.getInstance().getReference().child("BuyAndSell");
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
 
@@ -70,11 +79,11 @@ public class BuyAndSellActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull final ItemPostViewHolder itemPostViewHolder, int i, @NonNull BuyAndSellItem buyAndSellItem)
             {
-                String ItemId = getRef(i).getKey();
+                final String ItemId = getRef(i).getKey();
 
                 buyAndSellRef.child(ItemId).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot)
                     {
                         String itemUser = dataSnapshot.child("createdBy").getValue().toString();
                         String date = dataSnapshot.child("date").getValue().toString();
@@ -136,6 +145,39 @@ public class BuyAndSellActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                    }
+                });
+
+                itemPostViewHolder.deleteItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        buyAndSellRef.child(ItemId).removeValue();
+                        buyAndSellStorageRef.child(ItemId).delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid)
+                                    {
+                                        Toast.makeText(BuyAndSellActivity.this, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e)
+                            {
+                                String error = e.toString();
+                                Toast.makeText(BuyAndSellActivity.this, "Error: "+error, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+
+                itemPostViewHolder.editItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent editItemIntent = new Intent(BuyAndSellActivity.this, EditBuyAndSellItemActivity.class);
+                        editItemIntent.putExtra("itemId", ItemId);
+                        startActivity(editItemIntent);
                     }
                 });
             }
