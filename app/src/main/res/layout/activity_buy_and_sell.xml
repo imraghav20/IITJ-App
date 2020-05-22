@@ -43,8 +43,7 @@
         android:layout_below="@+id/app_bar_layout_buy_and_sell"
         android:layout_above="@+id/new_buy_and_sell_button"
         android:padding="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginTop="5dp" />
 
     <ImageButton
         android:id="@+id/new_buy_and_sell_button"
@@ -53,7 +52,7 @@
         android:src="@drawable/ic_add_circle_outline_red_60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginRight="20dp"
         android:background="@android:color/transparent"/>
 

@@ -23,7 +23,7 @@
         <ImageView
             android:id="@+id/item_image"
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="280dp"
             android:layout_below="@+id/item_user_name"
             android:src="@drawable/ic_buy_and_sell_image_black_24dp"
             android:padding="5dp"/>
@@ -93,7 +93,8 @@
             android:orientation="horizontal"
             android:layout_below="@+id/contact"
             android:layout_marginTop="5dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/item_edit_button"
