@@ -28,6 +28,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class NewBuyAndSellItemActivity extends AppCompatActivity {
@@ -41,7 +43,7 @@ public class NewBuyAndSellItemActivity extends AppCompatActivity {
     private String downloadUrl="";
 
     private FirebaseAuth mAuth;
-    private String currentUserId, currentUserName="", currentUserEmail="";
+    private String currentUserId, currentUserName="", currentUserEmail="", currentDate, currentTime;
     private DatabaseReference buyAndSellRef, userRef;
     private StorageReference buyAndSellItemStorageRef;
 
@@ -125,6 +127,14 @@ public class NewBuyAndSellItemActivity extends AppCompatActivity {
         final String setItemDescription = itemDescription.getText().toString();
         final String setItemPhone = itemPhone.getText().toString();
 
+        Calendar calForDate = Calendar.getInstance();
+        SimpleDateFormat currentDateFormat = new SimpleDateFormat("MMM dd yyyy");
+        currentDate = currentDateFormat.format(calForDate.getTime());
+
+        Calendar calForTime = Calendar.getInstance();
+        SimpleDateFormat currentTimeFormat = new SimpleDateFormat("hh:mm a");
+        currentTime = currentTimeFormat.format(calForTime.getTime());
+
 
         if(TextUtils.isEmpty(setItemName))
         {
@@ -176,6 +186,8 @@ public class NewBuyAndSellItemActivity extends AppCompatActivity {
                     newItemMap.put("itemDescription", setItemDescription);
                     newItemMap.put("userMobile", setItemPhone);
                     newItemMap.put("itemImage", downloadUrl);
+                    newItemMap.put("time", currentTime);
+                    newItemMap.put("date", currentDate);
 
                     buyAndSellRef.child(itemKey).updateChildren(newItemMap)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {

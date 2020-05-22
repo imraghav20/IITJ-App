@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="20dp"
+    android:layout_margin="10dp"
+    android:background="@drawable/chat">
+
+    <RelativeLayout
+        android:id="@+id/card_view_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/item_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Posted by: "
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:padding="5dp"/>
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:layout_below="@+id/item_user_name"
+            android:src="@drawable/ic_buy_and_sell_image_black_24dp"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_image"
+            android:text="Item Name"
+            android:gravity="center_horizontal"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_name"
+            android:text="Item Description"
+            android:gravity="center_horizontal"
+            android:textSize="15dp"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_description"
+            android:text="₹ "
+            android:gravity="center_horizontal"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:padding="5dp"/>
+
+        <LinearLayout
+            android:id="@+id/contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/item_price"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/email_contact_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_email_black_24dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"/>
+
+            <ImageView
+                android:id="@+id/phone_contact_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_call_black_24dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/user_edit_and_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/contact"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/item_edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:text="Edit"
+                android:layout_marginRight="2dp"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/item_delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:text="Delete"
+                android:layout_marginLeft="2dp"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_post_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_edit_and_delete"
+            android:layout_toLeftOf="@+id/item_post_time"
+            android:layout_marginRight="20dp"
+            android:text="Date"
+            android:textSize="15dp"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/item_post_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_edit_and_delete"
+            android:layout_alignParentRight="true"
+            android:text="Time"
+            android:textSize="15dp"
+            android:textColor="@android:color/black"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
