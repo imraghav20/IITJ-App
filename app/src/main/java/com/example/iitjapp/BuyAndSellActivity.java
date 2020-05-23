@@ -107,6 +107,7 @@ public class BuyAndSellActivity extends AppCompatActivity {
                         if(currentUserId.equals(id))
                         {
                             itemPostViewHolder.editAndDelete.setVisibility(View.VISIBLE);
+                            itemPostViewHolder.contact.setVisibility(View.GONE);
                         }
                         if(mobile.equals(""))
                         {
@@ -200,7 +201,7 @@ public class BuyAndSellActivity extends AppCompatActivity {
         TextView userName, itemName, itemDescription, itemPrice, date, time;
         ImageView itemImage, emailButton, callButton;
         Button editItem, deleteItem;
-        LinearLayout editAndDelete;
+        LinearLayout editAndDelete, contact;
 
         public ItemPostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -217,6 +218,7 @@ public class BuyAndSellActivity extends AppCompatActivity {
             editItem = itemView.findViewById(R.id.item_edit_button);
             deleteItem = itemView.findViewById(R.id.item_delete_button);
             editAndDelete = itemView.findViewById(R.id.user_edit_and_delete);
+            contact = itemView.findViewById(R.id.contact);
         }
     }
 }
