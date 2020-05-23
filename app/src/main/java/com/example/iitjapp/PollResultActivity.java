@@ -75,15 +75,44 @@ public class PollResultActivity extends AppCompatActivity {
                 barDataSet.setColor(Color.RED);
 
                 ArrayList<String> options = new ArrayList<>();
-                options.add(option1);
-                options.add(option2);
+                if(option1.length() > 10)
+                {
+                    options.add(option1.substring(0, 10));
+                }
+                else
+                {
+                    options.add(option1);
+                }
+
+                if(option2.length() > 10)
+                {
+                    options.add(option2.substring(0, 10));
+                }
+                else
+                {
+                    options.add(option2);
+                }
                 if(!option3.equals(""))
                 {
-                    options.add(option3);
+                    if(option3.length() > 10)
+                    {
+                        options.add(option3.substring(0, 10));
+                    }
+                    else
+                    {
+                        options.add(option3);
+                    }
                 }
                 if(!option4.equals(""))
                 {
-                    options.add(option4);
+                    if(option4.length() > 10)
+                    {
+                        options.add(option4.substring(0, 10));
+                    }
+                    else
+                    {
+                        options.add(option4);
+                    }
                 }
 
                 BarData theData = new BarData(options, barDataSet);
