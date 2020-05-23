@@ -19,7 +19,7 @@ public class PostFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_post, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_post, container, false);
 
         buy_and_sell = (ImageButton) rootView.findViewById(R.id.buy_and_sell);
         gallery = (ImageButton) rootView.findViewById(R.id.gallery);
@@ -29,6 +29,15 @@ public class PostFragment extends Fragment {
             public void onClick(View v) {
                 Intent buyAndSellIntent = new Intent(getActivity(), BuyAndSellActivity.class);
                 startActivity(buyAndSellIntent);
+            }
+        });
+
+        gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent galleryIntent = new Intent(getActivity(), GalleryActivity.class);
+                startActivity(galleryIntent);
             }
         });
 
