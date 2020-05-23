@@ -6,11 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +45,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,10 +75,20 @@ public class GalleryActivity extends AppCompatActivity {
 
     private ProgressDialog loadingBar;
 
+    private static final int WRITE_EXTERNAL_STORAGE_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+            {
+                String [] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permission, WRITE_EXTERNAL_STORAGE_CODE);
+            }
+        }
 
         imageUploadList = findViewById(R.id.image_upload_recyclerview);
         imageList = findViewById(R.id.gallery_recyclerview);
@@ -83,11 +105,6 @@ public class GalleryActivity extends AppCompatActivity {
         currentUserId = mAuth.getCurrentUser().getUid();
 
         loadingBar = new ProgressDialog(this);
-
-//        newPostBtn.setVisibility(View.VISIBLE);
-//        uploadBtn.setVisibility(View.GONE);
-//        imageUploadList.setVisibility(View.GONE);
-//        imageList.setVisibility(View.VISIBLE);
 
         getUserName();
 
@@ -119,15 +136,15 @@ public class GalleryActivity extends AppCompatActivity {
     {
         super.onStart();
 
-        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Gallery>()
+        final FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Gallery>()
                 .setQuery(galleryRef, Gallery.class)
                 .build();
 
-        FirebaseRecyclerAdapter<Gallery, ImageViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Gallery, ImageViewHolder>(options) {
+        final FirebaseRecyclerAdapter<Gallery, ImageViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Gallery, ImageViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull final ImageViewHolder imageViewHolder, int i, @NonNull Gallery gallery)
             {
-                String imageId = getRef(i).getKey();
+                final String imageId = getRef(i).getKey();
 
                 galleryRef.child(imageId).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -149,13 +166,59 @@ public class GalleryActivity extends AppCompatActivity {
                         {
                             imageViewHolder.delete.setVisibility(View.VISIBLE);
                         }
-
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError)
                     {
 
+                    }
+                });
+
+                imageViewHolder.delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        galleryStorageRef.child(imageId).delete();
+                        galleryRef.child(imageId).removeValue();
+                    }
+                });
+
+                imageViewHolder.download.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v)
+                    {
+
+                        StorageReference imgRef = galleryStorageRef.child(imageId);
+                        Bitmap bitmap = ((BitmapDrawable) imageViewHolder.galleryPic.getDrawable()).getBitmap();
+
+                        File path = Environment.getExternalStorageDirectory();
+                        File dir = new File(path+"/IITJ App");
+                        dir.mkdirs();
+                        String imageName = imageId + ".PNG";
+                        File file = new File(dir, imageName);
+                        OutputStream out;
+                        try
+                        {
+                            loadingBar.setTitle("Posting Images");
+                            loadingBar.setMessage("Please wait, while we are posting your images.");
+                            loadingBar.setCanceledOnTouchOutside(false);
+                            loadingBar.show();
+
+                            out = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                            out.flush();
+                            out.close();
+
+                            loadingBar.dismiss();
+
+                            Toast.makeText(GalleryActivity.this, "File saved successfully", Toast.LENGTH_SHORT).show();
+                        }
+                        catch (Exception e)
+                        {
+                            loadingBar.dismiss();
+                            Toast.makeText(GalleryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
