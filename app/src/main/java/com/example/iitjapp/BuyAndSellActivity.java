@@ -123,11 +123,10 @@ public class BuyAndSellActivity extends AppCompatActivity {
                             public void onClick(View v)
                             {
                                 String [] recipient = mail.split(",");
-                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", mail, null));
                                 intent.putExtra(Intent.EXTRA_EMAIL, recipient);
                                 intent.putExtra(Intent.EXTRA_SUBJECT, "Buy and Sell- "+name);
 
-                                intent.setType("message/rfc822");
                                 startActivity(Intent.createChooser(intent, "Mail via: "));
                             }
                         });
